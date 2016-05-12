@@ -13,6 +13,8 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var celsiusLabel: UILabel!
     @IBOutlet var textField: UITextField!
     
+    // NSNumberFormatter to display no more than one fractional digit.
+    
     let numberFormatter: NSNumberFormatter = {
         let nf = NSNumberFormatter()
         nf.numberStyle = .DecimalStyle
@@ -33,12 +35,9 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
         } else {
             return nil
         }
-    
-        
     }
     
     @IBAction func fahrenheitFieldEditingChanged(textField: UITextField) {
-        
         if let text = textField.text, value = Double(text) {
             fahrenheitValue = value
         } else {
@@ -58,14 +57,20 @@ class ConversionViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
+    // Print the text field’s current text as well as the replacement string.
+    
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let existingTextHasDecimalSeparator = textField.text?.rangeOfString(".")
+        let replacementTextHasDecimalSeparator = string.rangeOfString(".")
         
-        print("Current text: \(textField.text)")
-        print("Replacement text: \(string)")
-        
-        return true
-        
+        if existingTextHasDecimalSeparator != nil && replacementTextHasDecimalSeparator != nil {
+            
+            return false
+        } else {
+            return true
+        }
     }
 }
+
 
 
